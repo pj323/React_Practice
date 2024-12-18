@@ -1,0 +1,14 @@
+.navbar {
+    width: 100%;
+    background-color: red;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .homeLink {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+  
