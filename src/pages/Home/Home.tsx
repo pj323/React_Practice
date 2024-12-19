@@ -1,17 +1,29 @@
-import React from 'react';
-import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
-import { PieChart, BarChart, ErrorOutline, HelpOutline } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Box, Typography, Grid, Card, CardContent, Button, TextField, Alert } from '@mui/material';
+import { PieChart, BarChart, HelpOutline, Send, Chat, RocketLaunch } from '@mui/icons-material';
+import Charts from './Charts';
 
 const Home: React.FC = () => {
+  const [instanceName, setInstanceName] = useState('');
+  const [response, setResponse] = useState('');
+
+  const handlePing = () => {
+    if (instanceName.trim()) {
+      setResponse(`Pong: Instance "${instanceName}" responded successfully.`);
+    } else {
+      setResponse('Please enter a valid instance name.');
+    }
+  };
+
   return (
     <Box sx={{ padding: '2rem' }}>
       {/* Welcome Banner */}
       <Box sx={{ marginBottom: '2rem', textAlign: 'center' }}>
         <Typography variant="h4" fontWeight="bold">
-          Welcome to Kubernetes Dashboard - SF
+          Welcome to Kubernetes Dashboard - Redis
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
-          Manage and monitor your Kubernetes clusters efficiently.
+          Manage and monitor your Kubernetes clusters efficiently - Team Turing
         </Typography>
       </Box>
 
@@ -55,20 +67,20 @@ const Home: React.FC = () => {
             <Button
               fullWidth
               variant="contained"
-              startIcon={<PieChart />}
+              startIcon={<Chat />}
               sx={{ backgroundColor: 'black', color: 'white' }}
             >
-              View EDCO Test Environment
+              FAQ Section
             </Button>
           </Grid>
           <Grid item xs={12} md={4}>
             <Button
               fullWidth
               variant="contained"
-              startIcon={<BarChart />}
+              startIcon={<RocketLaunch />}
               sx={{ backgroundColor: 'black', color: 'white' }}
             >
-              View EDCR Prod Environment
+              RocketChat Team Redis
             </Button>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -78,23 +90,65 @@ const Home: React.FC = () => {
               startIcon={<HelpOutline />}
               sx={{ backgroundColor: 'black', color: 'white' }}
             >
-              Help Center
+              Team Oncall
             </Button>
           </Grid>
         </Grid>
       </Box>
 
-      {/* Recent Alerts */}
+      {/* Ping an Instance Feature */}
+      <Box
+        sx={{
+          backgroundColor: '#f9f9f9',
+          padding: '1.5rem',
+          borderRadius: '8px',
+          boxShadow: 1,
+          marginBottom: '2rem',
+        }}
+      >
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          Ping an Instance
+        </Typography>
+        <TextField
+          label="Instance Name"
+          variant="outlined"
+          fullWidth
+          value={instanceName}
+          onChange={(e) => setInstanceName(e.target.value)}
+          sx={{ marginBottom: '1rem' }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handlePing}
+          startIcon={<Send />}
+        >
+          Ping
+        </Button>
+
+        {/* Display Ping Response */}
+        {response && (
+          <Alert severity="success" sx={{ marginTop: '1rem' }}>
+            {response}
+          </Alert>
+        )}
+      </Box>
+
+      {/* Charts Section */}
       <Box>
         <Typography variant="h6" fontWeight="bold" sx={{ marginBottom: '1rem' }}>
-          Recent Alerts
+          Cluster Resource Utilization
         </Typography>
-        <Card sx={{ padding: '1rem', backgroundColor: '#ffe5e5' }}>
-          <Typography variant="body1" color="error">
-            <ErrorOutline sx={{ verticalAlign: 'middle', marginRight: '0.5rem' }} />
-            High CPU usage detected in EDCR Prod cluster.
-          </Typography>
-        </Card>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            {/* First Chart */}
+            <Charts chartType="pie" />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {/* Second Chart */}
+            <Charts chartType="bar" />
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
